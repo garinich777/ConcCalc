@@ -3,10 +3,109 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wf="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        xmlns:f="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:local="clr-namespace:ConcCalc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="420" Width="700"
+        MinWidth="700" MinHeight="420" Loaded="Window_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Таблица значений" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <DataGrid Grid.RowSpan="2" IsReadOnly="True" AutoGenerateColumns="False" Margin="0,25,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Время" Binding="{Binding Time}" Width="10*"/>
+                <DataGridTextColumn Header="Концентрация" Binding="{Binding Conc}" Width="15*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Content="Выбор рассчитываемого вещества"  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="1" Margin="5,25,0,0">
+            <RadioButton Content="Вещество A"/>
+            <RadioButton Content="Вещество B"/>
+            <RadioButton Content="Вещество C"/>
+            
+            <DockPanel>
+                <Label Content="k1" Width="92"/>
+                <Label Content="k2"/>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Left">
+                <WindowsFormsHost Margin="5,0,5,0" Width="80">
+                    <f:NumericUpDown Name="k1"/>
+                </WindowsFormsHost>
+                <WindowsFormsHost Margin="5,0,0,0" Width="80">
+                    <f:NumericUpDown Name="k2"/>
+                </WindowsFormsHost>
+            </DockPanel>
+            
+            <DockPanel>
+                <Label Content="A" Width="62"/>
+                <Label Content="B" Width="57"/>
+                <Label Content="C"/>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Left">
+                <WindowsFormsHost Margin="5,0,5,0" Width="51">
+                    <f:NumericUpDown Name="A"/>
+                </WindowsFormsHost>
+                <WindowsFormsHost Margin="5,0,0,0" Width="51">
+                    <f:NumericUpDown Name="B"/>
+                </WindowsFormsHost>
+                <WindowsFormsHost Margin="5,0,0,0" Width="51">
+                    <f:NumericUpDown Name="C"/>
+                </WindowsFormsHost>
+            </DockPanel>
+
+            <Label Content="Погрешность, %" Margin="0,5,0,0"/>
+            <DockPanel Margin="0,-7,0,0">
+                <Label Content="Мин" Width="92"/>
+                <Label Content="Макс"/>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Left">
+                <WindowsFormsHost Margin="5,0,5,0" Width="80">
+                    <f:NumericUpDown Name="Min"/>
+                </WindowsFormsHost>
+                <WindowsFormsHost Margin="5,0,0,0" Width="80">
+                    <f:NumericUpDown Name="Max"/>
+                </WindowsFormsHost>
+            </DockPanel>
+
+            <Label Content="Время реакции, сек" Margin="0,5,0,0"/>
+            <WindowsFormsHost Margin="5,0,0,0" Width="80" HorizontalAlignment="Left">
+                <f:NumericUpDown Name="TimeReaction"/>
+            </WindowsFormsHost>
+            
+        </StackPanel>
+
+
+        <Border x:Name="border" Margin="10"  BorderBrush="Black" BorderThickness="1" Grid.Column="2">
+            <Grid>
+                <Label Content="График" Margin="5,0,0,0"/>
+                <WindowsFormsHost x:Name="host" Margin="0,25,0,0">
+                    <wf:Chart x:Name="MyWinformChart" Dock="Fill">
+                        <wf:Chart.Series>
+                            <wf:Series Name="series" ChartType="Line"/>
+                        </wf:Chart.Series>
+                        <wf:Chart.ChartAreas>
+                            <wf:ChartArea/>
+                        </wf:Chart.ChartAreas>
+                    </wf:Chart>
+                </WindowsFormsHost>
+            </Grid>
+        </Border>
         
+        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right" Width="200">
+            <Button Content="Аналитический метод" Height="50" Margin="5"/>
+            <Button Content="Метод Эйлера" Height="50" Margin="5"/>
+        </StackPanel>
+
     </Grid>
 </Window>
