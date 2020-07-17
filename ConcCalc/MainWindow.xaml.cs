@@ -43,19 +43,21 @@ namespace ConcCalc
             GraphOfValues.Series[3].Points.Clear();
             GraphOfValues.Series[4].Points.Clear();
             GraphOfValues.Series[5].Points.Clear();
-            double yA, yB = 0;
+            double yA, yB;
+            yA = Convert.ToDouble(ConcentrationOfA.Value);
+            yB = 0;
             TableOfValuesDatagrid.RowCount = 21;
             TableOfValuesDatagrid.ColumnCount = 2;
             GraphOfValues.Series[1].Points.AddXY(0, 0);
+            Innacurate = (yA / 100) * Rand.Next(Convert.ToInt32(MaximalInaccuracy.Value) - Convert.ToInt32(MinimalInaccuracy.Value), Convert.ToInt32(MaximalInaccuracy.Value));
             for (double i = 0; i < Convert.ToDouble(TimeForReaction.Value); i += Convert.ToDouble(TimeForReaction.Value) / 500)
-            {
-
+            {                
                 yA = Convert.ToDouble(ConcentrationOfA.Value) * Math.Pow(Math.E, i * (-1) * (Convert.ToDouble(ReactSpeedKOne.Value)));
-                Innacurate = (yA / 100) * Rand.Next(Convert.ToInt32(MaximalInaccuracy.Value) - Convert.ToInt32(MinimalInaccuracy.Value), Convert.ToInt32(MaximalInaccuracy.Value));
-                GraphOfValues.Series[0].Points.AddXY(i, yA);
-                GraphOfValues.Series[3].Points.AddXY(i, yA + Innacurate);
                 yB = (Convert.ToDouble(ConcentrationOfA.Value) - yA) * Math.Pow(Math.E, i * (-1) * (Convert.ToDouble(ReactSpeedKTwo.Value)));
+
+                GraphOfValues.Series[0].Points.AddXY(i, yA);
                 GraphOfValues.Series[1].Points.AddXY(i, yB);
+                GraphOfValues.Series[3].Points.AddXY(i, yA + Innacurate);
                 GraphOfValues.Series[4].Points.AddXY(i, yB + Innacurate);
                 GraphOfValues.Series[2].Points.AddXY(i, Convert.ToDouble(ConcentrationOfA.Value) - yA - yB);
                 GraphOfValues.Series[5].Points.AddXY(i, Convert.ToDouble(ConcentrationOfA.Value) - yA - yB + Innacurate);
@@ -77,9 +79,6 @@ namespace ConcCalc
                     TableOfValuesDatagrid.Rows[CurrentRow].Cells[0].Value = Math.Round(i, 2);
                     TableOfValuesDatagrid.Rows[CurrentRow].Cells[1].Value = Math.Round(yA, 2);
                     CurrentRow++;
-
-
-
                 }
                 TableOfValuesDatagrid.Columns[0].HeaderText = "Value of x";
                 TableOfValuesDatagrid.Columns[1].HeaderText = "Value of f(x)";
@@ -140,7 +139,6 @@ namespace ConcCalc
 
             }
         }
-
 
         private void AnalyticButton_Click(object sender, EventArgs e)
         {
@@ -335,40 +333,25 @@ namespace ConcCalc
             GraphOfValues.Series[1].Points.AddXY(0, 0);
             for (double i = 0; i < Convert.ToDouble(TimeForReaction.Value); i += Convert.ToDouble(StepOfEiler.Value))
             {
-
                 if (SkipFirst)
                 {
                     yA = Convert.ToDouble(ConcentrationOfA.Value);
-                    tmpA = yA;
-                    Innacurate = (yA / 100) * Rand.Next(Convert.ToInt32(MaximalInaccuracy.Value) - Convert.ToInt32(MinimalInaccuracy.Value), Convert.ToInt32(MaximalInaccuracy.Value));
-                    GraphOfValues.Series[0].Points.AddXY(i, yA);
-                    GraphOfValues.Series[3].Points.AddXY(i, yA + Innacurate);
+                    yB = 0;
+                    Innacurate = (yA / 100) * Rand.Next(Convert.ToInt32(MaximalInaccuracy.Value) - Convert.ToInt32(MinimalInaccuracy.Value), Convert.ToInt32(MaximalInaccuracy.Value));                   
                 }
                 else
                 {
                     yA = tmpA - Convert.ToDouble(StepOfEiler.Value) * Convert.ToDouble(ReactSpeedKOne.Value) * tmpA;
-                    tmpA = yA;
-                    GraphOfValues.Series[0].Points.AddXY(i, yA);
-                    GraphOfValues.Series[3].Points.AddXY(i, yA + Innacurate);
-                }
-
-                if (SkipFirst)
-                {
-                    yB = 0;
-                    tmpB = yB;
-                    GraphOfValues.Series[1].Points.AddXY(i, yB);
-                    GraphOfValues.Series[4].Points.AddXY(i, yB + Innacurate);
-                }
-                else
-                {
                     yB = tmpB + Convert.ToDouble(StepOfEiler.Value) * (Convert.ToDouble(ReactSpeedKOne.Value) * yA - tmpB * Convert.ToDouble(ReactSpeedKTwo.Value));
-                    tmpB = yB;
-                    GraphOfValues.Series[1].Points.AddXY(i, yB);
-                    GraphOfValues.Series[4].Points.AddXY(i, yB + Innacurate);
                 }
-                SkipFirst = false; ;
+                GraphOfValues.Series[0].Points.AddXY(i, yA);
+                GraphOfValues.Series[1].Points.AddXY(i, yB);
+                GraphOfValues.Series[3].Points.AddXY(i, yA + Innacurate);
+                GraphOfValues.Series[4].Points.AddXY(i, yB + Innacurate);
                 GraphOfValues.Series[2].Points.AddXY(i, Convert.ToDouble(ConcentrationOfA.Value) - yA - yB);
                 GraphOfValues.Series[5].Points.AddXY(i, Convert.ToDouble(ConcentrationOfA.Value) - yA - yB + Innacurate);
+                tmpA = yA; tmpB = yB;
+                SkipFirst = false;
             }
         }
     }
