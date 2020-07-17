@@ -28,11 +28,15 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <WindowsFormsHost Grid.RowSpan="2" Margin="0,25,0,0">
+            <f:DataGridView x:Name="TableOfValuesDatagrid"/>
+        </WindowsFormsHost>
+
         <Label Content="Выбор рассчитываемого вещества"  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <StackPanel Grid.Column="1" Margin="5,25,0,0">
-            <RadioButton Content="Вещество A"/>
-            <RadioButton Content="Вещество B"/>
-            <RadioButton Content="Вещество C"/>
+        <StackPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,25,0,0">
+            <RadioButton x:Name="ConcentrationAButton" Content="Вещество A"/>
+            <RadioButton x:Name="ConcentrationBButton" Content="Вещество B"/>
+            <RadioButton x:Name="ConcentrationCButton" Content="Вещество C"/>
             
             <DockPanel>
                 <Label Content="k1" Width="92"/>
@@ -40,10 +44,10 @@
             </DockPanel>
             <DockPanel HorizontalAlignment="Left">
                 <WindowsFormsHost Margin="5,0,5,0" Width="80">
-                    <f:NumericUpDown Name="k1"/>
+                    <f:NumericUpDown x:Name="ReactSpeedKOne" Value="5"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost Margin="5,0,0,0" Width="80">
-                    <f:NumericUpDown Name="k2"/>
+                    <f:NumericUpDown x:Name="ReactSpeedKTwo" Value="2"/>
                 </WindowsFormsHost>
             </DockPanel>
             
@@ -54,13 +58,13 @@
             </DockPanel>
             <DockPanel HorizontalAlignment="Left">
                 <WindowsFormsHost Margin="5,0,5,0" Width="51">
-                    <f:NumericUpDown Name="A"/>
+                    <f:NumericUpDown x:Name="ConcentrationOfA" Value="100"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost Margin="5,0,0,0" Width="51">
-                    <f:NumericUpDown Name="B"/>
+                    <f:NumericUpDown x:Name="ConcentrationOfB"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost Margin="5,0,0,0" Width="51">
-                    <f:NumericUpDown Name="C"/>
+                    <f:NumericUpDown x:Name="ConcentrationOfC"/>
                 </WindowsFormsHost>
             </DockPanel>
 
@@ -71,16 +75,21 @@
             </DockPanel>
             <DockPanel HorizontalAlignment="Left">
                 <WindowsFormsHost Margin="5,0,5,0" Width="80">
-                    <f:NumericUpDown Name="Min"/>
+                    <f:NumericUpDown x:Name="MinimalInaccuracy"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost Margin="5,0,0,0" Width="80">
-                    <f:NumericUpDown Name="Max"/>
+                    <f:NumericUpDown x:Name="MaximalInaccuracy"/>
                 </WindowsFormsHost>
             </DockPanel>
 
             <Label Content="Время реакции, сек" Margin="0,5,0,0"/>
             <WindowsFormsHost Margin="5,0,0,0" Width="80" HorizontalAlignment="Left">
-                <f:NumericUpDown Name="TimeReaction"/>
+                <f:NumericUpDown x:Name="TimeForReaction"/>
+            </WindowsFormsHost>
+            
+            <Label Content="Шаг" Margin="0,5,0,0"/>
+            <WindowsFormsHost Margin="5,0,0,0" Width="80" HorizontalAlignment="Left">
+                <f:NumericUpDown x:Name="StepOfEiler" DecimalPlaces="4" Maximum="0.1" />
             </WindowsFormsHost>
             
         </StackPanel>
@@ -90,9 +99,14 @@
             <Grid>
                 <Label Content="График" Margin="5,0,0,0"/>
                 <WindowsFormsHost x:Name="host" Margin="0,25,0,0">
-                    <wf:Chart x:Name="MyWinformChart" Dock="Fill">
+                    <wf:Chart x:Name="GraphOfValues" Dock="Fill">
                         <wf:Chart.Series>
-                            <wf:Series Name="series" ChartType="Line"/>
+                            <wf:Series x:Name="series0" ChartType="Line"/>
+                            <wf:Series x:Name="series1" ChartType="Line"/>
+                            <wf:Series x:Name="series2" ChartType="Line"/>
+                            <wf:Series x:Name="series3" ChartType="Line"/>
+                            <wf:Series x:Name="series4" ChartType="Line"/>
+                            <wf:Series x:Name="series5" ChartType="Line"/>
                         </wf:Chart.Series>
                         <wf:Chart.ChartAreas>
                             <wf:ChartArea/>
@@ -103,8 +117,8 @@
         </Border>
         
         <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right" Width="200">
-            <Button Content="Аналитический метод" Height="50" Margin="5"/>
-            <Button Content="Метод Эйлера" Height="50" Margin="5"/>
+            <Button Content="Аналитический метод" Height="50" Margin="5" Click="AnalyticButton_Click"/>
+            <Button Content="Метод Эйлера" Height="50" Margin="5" Click="EilerButton_Click"/>
         </StackPanel>
 
     </Grid>
