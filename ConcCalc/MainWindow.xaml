@@ -100,13 +100,16 @@
                 <Label Content="График" Margin="5,0,0,0"/>
                 <WindowsFormsHost x:Name="host" Margin="0,25,0,0">
                     <wf:Chart x:Name="GraphOfValues" Dock="Fill">
+                        <wf:Chart.Legends>
+                            <wf:Legend wf:Name="Legend1"/>
+                        </wf:Chart.Legends>
                         <wf:Chart.Series>
-                            <wf:Series x:Name="series0" ChartType="Line"/>
-                            <wf:Series x:Name="series1" ChartType="Line"/>
-                            <wf:Series x:Name="series2" ChartType="Line"/>
-                            <wf:Series x:Name="series3" ChartType="Line"/>
-                            <wf:Series x:Name="series4" ChartType="Line"/>
-                            <wf:Series x:Name="series5" ChartType="Line"/>
+                            <wf:Series x:Name="series0" wf:Name="Конц. А" Legend="Legend1" ChartType="Line"/>
+                            <wf:Series x:Name="series1" wf:Name="Конц. B" ChartType="Line"/>
+                            <wf:Series x:Name="series2" wf:Name="Конц. C" ChartType="Line"/>
+                            <wf:Series x:Name="series3" wf:Name="Погреш. А" ChartType="Line"/>
+                            <wf:Series x:Name="series4" wf:Name="Погреш. B" ChartType="Line"/>
+                            <wf:Series x:Name="series5" wf:Name="Погреш. C" ChartType="Line"/>
                         </wf:Chart.Series>
                         <wf:Chart.ChartAreas>
                             <wf:ChartArea/>
